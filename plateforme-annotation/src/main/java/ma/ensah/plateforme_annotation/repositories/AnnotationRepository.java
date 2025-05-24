@@ -10,12 +10,6 @@ import java.util.List;
 
 public interface AnnotationRepository extends JpaRepository<Annotation, Long> {
 
-//    // Find annotations by annotator ID
-//    List<Annotation> findByAnnotateurId(Long annotateurId);
-//
-//    // Find annotations by dataset ID (custom query to traverse relationships)
-//    @Query("SELECT a FROM Annotation a WHERE a.complete.tache.dataset.id = :datasetId")
-//    List<Annotation> findByDatasetId(@Param("datasetId") Long datasetId);
 
     List<Annotation> findByAnnotateurAndCompleteIn(Utilisateur annotator, List<Couple> couples);
 

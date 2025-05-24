@@ -449,53 +449,5 @@ public class AdminController {
 }
 
 
-//    @GetMapping("/admin/dataset-details/{datasetId}")
-//    @PreAuthorize("hasRole('Admin')")
-//    public ModelAndView showDatasetDetails(@PathVariable Long datasetId, @RequestParam(value = "startIndex", defaultValue = "0") int startIndex) {
-//        ModelAndView modelAndView = new ModelAndView("dataset-details");
-//        Dataset dataset = datasetRepository.findById(datasetId)
-//                .orElseThrow(() -> new IllegalArgumentException("Dataset not found: " + datasetId));
-//
-//        // Calculate progress for this dataset
-//        List<Tache> taches = dataset.getTaches();
-//        if (taches == null || taches.isEmpty()) {
-//            dataset.setProgress(0);
-//            System.out.println("No Taches found for dataset: " + datasetId);
-//        } else {
-//            long totalCompletes = taches.stream()
-//                    .flatMap(tache -> tache.getCompletes().stream())
-//                    .count();
-//            long completedCompletes = taches.stream()
-//                    .flatMap(tache -> tache.getCompletes().stream())
-//                    .filter(complete -> complete != null && !complete.getAnnotations().isEmpty())
-//                    .count();
-//            int progress = totalCompletes > 0 ? (int) ((completedCompletes * 100) / totalCompletes) : 0;
-//            dataset.setProgress(progress);
-//            System.out.println("Dataset " + datasetId + " has " + totalCompletes + " couples, " + completedCompletes + " completed");
-//        }
-//
-//        // Fetch all couples from Tache entities
-//        List<Couple> allCouples = dataset.getTaches().stream()
-//                .flatMap(tache -> tache.getCompletes().stream())
-//                .filter(couple -> couple != null)
-//                .collect(Collectors.toList());
-//        System.out.println("Fetched " + allCouples.size() + " couples for dataset: " + datasetId);
-//
-//        // Define the number of couples to display at a time
-//        int couplesPerPage = 2;
-//
-//        // Calculate the range of couples to display
-//        int start = Math.max(0, startIndex); // Ensure startIndex is not negative
-//        int end = Math.min(start + couplesPerPage, allCouples.size()); // Don't exceed the list size
-//        List<Couple> visibleCouples = allCouples.subList(start, end);
-//
-//        modelAndView.addObject("dataset", dataset);
-//        modelAndView.addObject("annotators", dataset.getAnnotators());
-//        modelAndView.addObject("couples", visibleCouples);
-//        modelAndView.addObject("startIndex", start);
-//        modelAndView.addObject("totalCouples", allCouples.size());
-//        modelAndView.addObject("couplesPerPage", couplesPerPage);
-//        return modelAndView;
-//    }
 
 

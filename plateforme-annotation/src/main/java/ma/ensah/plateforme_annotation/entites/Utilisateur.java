@@ -36,9 +36,6 @@ public class Utilisateur {
     @OneToMany(mappedBy = "annotateur", cascade = CascadeType.ALL)
     private List<Annotation> annotations;
 
-//    @ManyToMany(mappedBy = "annotators")
-//    private List<Dataset> datasets = new ArrayList<>();
-
     @OneToMany(mappedBy = "annotateur")
     private List<Tache> taches = new ArrayList<>();
 
