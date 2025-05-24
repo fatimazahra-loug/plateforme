@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tableau de Bord de l'Annotateur</title>
+    <style>
+        body {
+            background: #D1C4E9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #9575CD;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        th, td {
+            border: 1px solid #D1C4E9;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        th {
+            background-color: #9575CD;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .action-link {
+            color: #7E57C2;
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .no-tasks {
+            text-align: center;
+            color: #666;
+        }
+        .logout-form {
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+        .logout-form button {
+            background-color: #9575CD;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-form button:hover {
+            background-color: #7E57C2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logout-form">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <h1>Liste des Taches</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom du Dataset</th>
+            <th>Avancement</th>
+            <th>Taille</th>
+            <th>Date Limite</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${tasks.isEmpty()}">
+            <td colspan="6" class="no-tasks">Aucune tâche assignée.</td>
+        </tr>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.dataset.name}"></td>
+            <td th:text="${task.progress} + '%'"></td>
+            <td th:text="${task.taille}"></td>
+            <td th:text="${#temporals.format(task.dateLimit, 'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+                <a th:href="@{/annotateur/annotate/{id}(id=${task.id})}" class="action-link">Travailler</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

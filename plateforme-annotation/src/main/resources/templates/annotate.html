@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Annoter une Tâche</title>
+    <style>
+        body {
+            background: #D1C4E9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #9575CD;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .dataset-description {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f2f2f2;
+            border-radius: 5px;
+        }
+        .couple-id {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .text-box {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid #D1C4E9;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        .classes-section {
+            margin-bottom: 1rem;
+        }
+        .classes-section label {
+            margin-right: 1rem;
+        }
+        .buttons {
+            text-align: center;
+        }
+        .buttons button, .buttons a {
+            background-color: #9575CD;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            cursor: pointer;
+        }
+        .buttons button:disabled, .buttons a.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .buttons button:hover:not(:disabled), .buttons a:hover:not(.disabled) {
+            background-color: #7E57C2;
+        }
+        .return-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .return-link a {
+            color: #9575CD;
+            text-decoration: underline;
+        }
+        .return-link a:hover {
+            color: #7E57C2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Annoter une Tâche</h1>
+
+    <div class="dataset-description">
+        <p><strong>Description du Dataset :</strong> <span th:text="${datasetDescription}"></span></p>
+    </div>
+
+    <div class="couple-id">
+        <p>ID du Couple : <span th:text="${currentCouple.id}"></span></p>
+    </div>
+
+    <div class="text-box">
+        <p><strong>Texte 1 :</strong></p>
+        <p th:text="${currentCouple.t1}"></p>
+    </div>
+    <div class="text-box">
+        <p><strong>Texte 2 :</strong></p>
+        <p th:text="${currentCouple.t2}"></p>
+    </div>
+
+    <div class="classes-section">
+        <p><strong>Choisissez une classe :</strong></p>
+        <form th:action="@{/annotateur/annotate/{id}/validate(id=${task.id})}" method="post">
+            <input type="hidden" name="coupleIndex" th:value="${coupleIndex}" />
+            <div th:each="className : ${classes}">
+                <label>
+                    <input type="radio" name="selectedClass" th:value="${className}" required />
+                    <span th:text="${className}"></span>
+                </label>
+            </div>
+            <div class="buttons">
+                <a th:href="@{/annotateur/annotate/{id}(id=${task.id}, coupleIndex=${coupleIndex - 1})}"
+                   th:classappend="${coupleIndex == 0} ? 'disabled'" th:attr="onclick=${coupleIndex == 0} ? 'return false' : ''">
+                    Précédent
+                </a>
+
+                <button type="submit">Valider</button>
+
+                <a th:href="@{/annotateur/annotate/{id}(id=${task.id}, coupleIndex=${coupleIndex + 1})}"
+                   th:classappend="${coupleIndex == totalCouples - 1} ? 'disabled'" th:attr="onclick=${coupleIndex == totalCouples - 1} ? 'return false' : ''">
+                    Suivant
+                </a>
+            </div>
+
+            <div class="return-link">
+                <a th:href="@{/annotateur/home}">Retour</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des Datasets</title>
+    <style>
+        body { background: #D1C4E9; font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: 6rem auto; padding: 1rem; background: white; border-radius: 5px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+        h1 { color: #9575CD; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { border: 1px solid #D1C4E9; padding: 0.5rem; text-align: left; }
+        th { background: #BBDEFB; color: #333; }
+        a { color: #9575CD; text-decoration: none; margin: 0 0.5rem; }
+        a:hover { color: #BBDEFB; }
+        .action-links { display: flex; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Liste des Datasets</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Avancement</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dataset : ${datasets}">
+            <td th:text="${dataset.id}"></td>
+            <td th:text="${dataset.name}"></td>
+            <td th:text="${dataset.description}"></td>
+            <td th:text="${dataset.progress} + '%'"></td>
+            <td>
+                <div class="action-links">
+                    <a th:href="@{'/admin/dataset-details/' + ${dataset.id}}">Détails</a>
+                    <a th:href="@{'/admin/annotator-manage/' + ${dataset.id}}">Ajouter Annotateur</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin/dashboard}">Retour au Dashboard</a>
+</div>
+</body>
+</html>

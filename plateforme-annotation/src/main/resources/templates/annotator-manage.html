@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gérer les Annotateurs</title>
+    <style>
+        body {
+            background: #D1C4E9; /* Light purple background */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #9575CD; /* Deep purple for header */
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #D1C4E9; /* Light purple border */
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: #BBDEFB; /* Light blue header */
+            color: #333;
+            font-weight: bold;
+        }
+        td input[type="checkbox"] {
+            margin: 0 auto;
+            display: block;
+        }
+        button, .button-link {
+            background-color: #9575CD; /* Deep purple button */
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        button:hover, .button-link:hover {
+            background-color: #7E57C2; /* Darker purple on hover */
+        }
+        .action-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Affecter des Annotateurs au Dataset: <span th:text="${dataset.name}"></span></h1>
+    <form th:action="@{'/admin/annotator-manage/' + ${dataset.id}}" method="post">
+        <table>
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Sélectionner</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="annotator : ${annotators}">
+                <td th:text="${annotator.nom}"></td>
+                <td th:text="${annotator.prenom}"></td>
+                <td><input type="checkbox" th:name="'annotatorIds'" th:value="${annotator.id}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="action-links">
+            <button type="submit">Valider</button>
+            <a th:href="@{/admin/dataset-list}" class="button-link">Retour</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

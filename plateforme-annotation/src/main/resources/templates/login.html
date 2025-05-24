@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Connexion</title>
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body with light gradient background */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #D1C4E9, #BBDEFB);
+        }
+
+        /* Form container */
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Heading */
+        h1 {
+            color: rebeccapurple;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        /* Form divs (labels and inputs) */
+        div {
+            margin-bottom: 1rem;
+        }
+
+        /* Labels */
+        label {
+            display: block;
+            color: purple;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Input fields */
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #D1C4E9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Input focus state */
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #BBDEFB;
+        }
+
+        /* Placeholder text */
+        input::placeholder {
+            color: #a0a0a0;
+        }
+
+        /* Submit button */
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(45deg, #D1C4E9, #BBDEFB);
+            border: none;
+            border-radius: 5px;
+            color: #333;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background: linear-gradient(45deg, #c4b5fd, #a3cffa);
+        }
+
+        /* Error message */
+        p[th\\:if="${param.error}"] {
+            color: #ff4d4d;
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h1>Connexion</h1>
+    <form th:action="@{/login}" method="post">
+        <div>
+            <label>Username :</label>
+            <input type="text" name="username" placeholder="Entrer votre username" required>
+        </div>
+        <div>
+            <label>Mot de passe :</label>
+            <input type="password" name="password" placeholder="Entrer votre mot de passe" required>
+        </div>
+        <button type="submit">Se connecter</button>
+    </form>
+    <p th:if="${param.error}" style="color: red;">Identifiants incorrects</p>
+</div>
+</body>
+</html>

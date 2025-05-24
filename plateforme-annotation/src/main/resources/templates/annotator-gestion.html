@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestion des Annotateurs</title>
+    <style>
+        body {
+            background: #D1C4E9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #9575CD;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #D1C4E9;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: #BBDEFB;
+            color: #333;
+            font-weight: bold;
+        }
+        .action-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .action-link {
+            color: #9575CD;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .action-link:hover {
+            color: #7E57C2;
+            text-decoration: underline;
+        }
+        .button-link {
+            background-color: #9575CD;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .button-link:hover {
+            background-color: #7E57C2;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gestion des Annotateurs</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${annotators.isEmpty()}">
+            <td colspan="3" style="text-align: center;">Aucun annotateur disponible.</td>
+        </tr>
+        <tr th:each="annotator : ${annotators}">
+            <td th:text="${annotator.nom}"></td>
+            <td th:text="${annotator.prenom}"></td>
+            <td>
+                <a th:href="@{/admin/annotator-edit/{id}(id=${annotator.id})}" class="action-link">Modifier</a>
+                <span> | </span>
+                <a th:href="@{/admin/annotator-delete/{id}(id=${annotator.id})}" class="action-link" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet annotateur ?')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="action-links">
+        <a th:href="@{/admin/annotator-add}" class="button-link">Ajouter un annotateur </a>
+    </div>
+
+    <div class="action-links">
+        <a th:href="@{/admin/dashboard}" class="button-link">Retour</a>
+    </div>
+</div>
+</body>
+</html>

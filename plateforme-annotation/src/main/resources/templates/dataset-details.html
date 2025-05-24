@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Détails du Dataset</title>
+    <style>
+        body {
+            background: #D1C4E9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #9575CD;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .info-section {
+            margin-bottom: 2rem;
+        }
+        .info-section p {
+            margin: 0.5rem 0;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #D1C4E9;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: #BBDEFB;
+            color: #333;
+            font-weight: bold;
+        }
+        .button, .button-link {
+            background-color: #9575CD;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .button:hover, .button-link:hover {
+            background-color: #7E57C2;
+        }
+        .action-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .remove-button {
+            background-color: #D32F2F;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+        .remove-button:hover {
+            background-color: #B71C1C;
+        }
+        .error-message {
+            color: #D32F2F;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .success-message {
+            color: #388E3C;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Display error message if present -->
+    <div th:if="${param.error}" class="error-message">
+        <p>Erreur: <span th:text="${param.error == 'csv_generation_failed' ? 'Échec de la génération du CSV' : ${param.error}}"></span></p>
+    </div>
+
+    <!-- Display success message if present -->
+    <div th:if="${param.message}" class="success-message">
+        <p th:text="${param.message == 'csv_generated' ? 'Exportation réussie ! Le fichier CSV a été généré.' : ${param.message}}"></p>
+    </div>
+
+    <h1>Détails du Dataset: <span th:text="${dataset.name}"></span></h1>
+
+    <div class="info-section">
+        <p><strong>Description:</strong> <span th:text="${dataset.description}"></span></p>
+        <p><strong>Classes:</strong> <span th:text="${dataset.classes}"></span></p>
+        <p><strong>Avancement:</strong> <span th:text="${dataset.progress} + '%'"></span></p>
+    </div>
+
+    <h2>Annotateurs Assignés</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${annotators.isEmpty()}">
+            <td colspan="3" style="text-align: center;">Aucun annotateur assigné.</td>
+        </tr>
+        <tr th:each="annotator : ${annotators}">
+            <td th:text="${annotator.nom}"></td>
+            <td th:text="${annotator.prenom}"></td>
+            <td>
+                <a th:href="@{/admin/remove-from-task/{taskId}/{annotatorId}(taskId=${annotatorToTaskId[annotator.id]}, annotatorId=${annotator.id})}"
+                   class="button remove-button">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Couples de Textes</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>T1</th>
+            <th>T2</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${couples.isEmpty()}">
+            <td colspan="2" style="text-align: center;">Aucun couple disponible.</td>
+        </tr>
+        <tr th:each="couple : ${couples}">
+            <td th:text="${couple.t1}"></td>
+            <td th:text="${couple.t2}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="action-links">
+        <button th:if="${startIndex > 0}" class="button" th:onclick="'window.location.href=\'' + @{/admin/dataset-details/{datasetId}(datasetId=${dataset.id}, startIndex=${startIndex - couplesPerPage})} + '\''">Afficher Moins</button>
+        <button th:if="${startIndex + couplesPerPage < totalCouples}" class="button" th:onclick="'window.location.href=\'' + @{/admin/dataset-details/{datasetId}(datasetId=${dataset.id}, startIndex=${startIndex + couplesPerPage})} + '\''">Afficher Plus</button>
+    </div>
+
+    <div class="action-links">
+        <a th:href="@{/admin/dataset-list}" class="button-link">Retour</a>
+        <a th:href="@{/admin/export-couples-to-csv}" class="button-link">Exporter dataset</a>
+    </div>
+</div>
+</body>
+</html>
