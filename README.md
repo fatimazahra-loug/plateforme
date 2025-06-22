@@ -1,0 +1,1 @@
+Development of a web platform for annotating datasets with Spring Boot. Manage users, datasets and annotations with an intuitive interface to label text data. Implementation of business logic with Spring MVC, security via Spring Security, and data persistence in MariaDB. Dynamic interface with Thymeleaf and Bootstrap for an optimized user experience.
